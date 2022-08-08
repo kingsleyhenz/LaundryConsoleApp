@@ -18,5 +18,5 @@ public class LaundryConnection {
     }
     public Connection getConnections() {
         return connection;
-}
+    }
 }
