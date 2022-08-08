@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 public class LaundryConnection {
     Connection connection;
-
     public boolean dbconnection(){
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/laundry", "root","");
