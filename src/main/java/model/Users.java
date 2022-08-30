@@ -5,21 +5,29 @@ public class Users {
     private String fullname;
     private long phoneNumber;
     private String HomeAddress;
-    private int NumberOfClothes;
+    private int Clothes_ID;
+    private String Date_Dropped;
+    private String Time_Dropped;
+    private String PickUp_Date;
+    private String PickUp_Time;
 
-    public Users(int userID, String fullname, long phoneNumber, String homeAddress, int numberOfClothes) {
+    public Users(int userID, String fullname, long phoneNumber, String homeAddress, int numberOfClothes, int clothes_id, String date_dropped, String time_dropped, String pickUp_date, String pickUp_time) {
         this.UserID = userID;
         this.fullname = fullname;
         this.phoneNumber = phoneNumber;
         this.HomeAddress = homeAddress;
-        this.NumberOfClothes = numberOfClothes;
+        Clothes_ID = clothes_id;
+        Date_Dropped = date_dropped;
+        Time_Dropped = time_dropped;
+        PickUp_Date = pickUp_date;
+        PickUp_Time = pickUp_time;
     }
 
-    public int getUserID(){
+    public int getUserID() {
         return UserID;
     }
 
-    public void setUserID(int UserID){
+    public void setUserID(int UserID) {
         this.UserID = UserID;
     }
 
@@ -30,6 +38,7 @@ public class Users {
     public void setFullnamee(String fullname) {
         this.fullname = fullname;
     }
+
     public long getPhoneNumber() {
         return phoneNumber;
     }
@@ -46,11 +55,45 @@ public class Users {
         HomeAddress = homeAddress;
     }
 
-    public int getNumberOfClothes() {
-        return NumberOfClothes;
+    public int getClothes_ID() {
+        return Clothes_ID;
     }
 
-    public void setNumberOfClothes(int numberOfClothes) {
-        NumberOfClothes = numberOfClothes;
+    public void setClothes_ID(int clothes_ID) {
+        Clothes_ID = clothes_ID;
+    }
+
+    public String getDate_Dropped() {
+        return Date_Dropped;
+    }
+
+    public void setDate_Dropped(String date_Dropped) {
+        Date_Dropped = date_Dropped;
+    }
+
+    public String getTime_Dropped() {
+        return Time_Dropped;
+    }
+
+    public void setTime_Dropped(String time_Dropped) {
+        Time_Dropped = time_Dropped;
+    }
+
+    public String getPickUp_Date() {
+        return PickUp_Date;
+    }
+
+    public void setPickUp_Date(String pickUp_Date) {
+        PickUp_Date = pickUp_Date;
+    }
+
+    public String getPickUp_Time() {
+        return PickUp_Time;
+    }
+
+    public void setPickUp_Time(String pickUp_Time) {
+        PickUp_Time = pickUp_Time;
     }
 }
+
+

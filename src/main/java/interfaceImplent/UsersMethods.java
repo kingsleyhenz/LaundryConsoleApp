@@ -18,7 +18,7 @@ public class UsersMethods implements IUserMethods {
     public boolean dropClothes(Users users) {
     boolean status = false;
     int update;
-    String INSERT = "INSERT INTO users (UserID, Fullname, Phone_No, Home_Address, No_Of_Clothes) VALUES (?,?,?,?,?)";
+    String INSERT = "INSERT INTO users (UserID, Fullname, Phone_No, Home_Address, Clothes_ID, Date_Dropped, Time_Dropped, PickUp_Date, PickUp_Time) VALUES (?,?,?,?,?,?,?,?,?)";
     if(launder.dbconnection()){
         try {
             prep = launder.getConnections().prepareStatement(INSERT);
@@ -26,7 +26,11 @@ public class UsersMethods implements IUserMethods {
             prep.setString(2, users.getFullname());
             prep.setLong(3, users.getPhoneNumber());
             prep.setString(4, users.getHomeAddress());
-            prep.setInt(5, users.getNumberOfClothes());
+            prep.setInt(5,users.getClothes_ID());
+            prep.setString(6, users.getDate_Dropped());
+            prep.setString(7, users.getTime_Dropped());
+            prep.setString(8, users.getPickUp_Date());
+            prep.setString(9, users.getPickUp_Time());
 
             update = prep.executeUpdate();
 
@@ -34,7 +38,7 @@ public class UsersMethods implements IUserMethods {
                 System.out.println("  <<>>  Laundry Not Placed");
                 return  false;
             } else{
-                System.out.println("  <<>>  Customer Laundry Has Been Successfully Placed");
+                System.out.println("<<>> Customer Laundry Has Been Successfully Placed <<>>");
             }
 
         }catch (SQLException e){
@@ -42,16 +46,6 @@ public class UsersMethods implements IUserMethods {
         }
     }
         return true;
-    }
-
-    @Override
-    public String checkPrice(int UserID) {
-        return null;
-    }
-
-    @Override
-    public String addClothes(Users users) {
-        return null;
     }
 
     @Override
