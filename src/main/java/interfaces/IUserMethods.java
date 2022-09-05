@@ -6,7 +6,8 @@ import model.Users;
 public interface IUserMethods {
     public boolean Register(Users users);
     public String ViewClothesTable(Clothes clothes);
-    public String checkPrice(Users users, Clothes clothes);
-    public String TimeLeft(Users users);
-    public String cancelService(int UserID, String confirm);
+    public String CheckPrice(Users users, Clothes clothes);
+    public String UpdateYourLaundry(Users users);
+    public String DaysAndTimeLeft(int UserId);
+    public String CancelService(int UserID, String confirm);
 }

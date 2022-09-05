@@ -12,7 +12,7 @@ public class Users {
     private String PickUp_Date;
     private String PickUp_Time;
 
-    public Users(int userID, String fullname, long phoneNumber, String homeAddress, int numberOfClothes, int clothes_id, int no_of_clothes, String date_dropped, String time_dropped, String pickUp_date, String pickUp_time) {
+    public Users() {
         this.UserID = userID;
         this.fullname = fullname;
         this.phoneNumber = phoneNumber;
