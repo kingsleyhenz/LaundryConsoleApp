@@ -6,17 +6,19 @@ public class Users {
     private long phoneNumber;
     private String HomeAddress;
     private int Clothes_ID;
+    private int No_of_Clothes;
     private String Date_Dropped;
     private String Time_Dropped;
     private String PickUp_Date;
     private String PickUp_Time;
 
-    public Users(int userID, String fullname, long phoneNumber, String homeAddress, int numberOfClothes, int clothes_id, String date_dropped, String time_dropped, String pickUp_date, String pickUp_time) {
+    public Users(int userID, String fullname, long phoneNumber, String homeAddress, int numberOfClothes, int clothes_id, int no_of_clothes, String date_dropped, String time_dropped, String pickUp_date, String pickUp_time) {
         this.UserID = userID;
         this.fullname = fullname;
         this.phoneNumber = phoneNumber;
         this.HomeAddress = homeAddress;
         Clothes_ID = clothes_id;
+        No_of_Clothes = no_of_clothes;
         Date_Dropped = date_dropped;
         Time_Dropped = time_dropped;
         PickUp_Date = pickUp_date;
@@ -61,6 +63,14 @@ public class Users {
 
     public void setClothes_ID(int clothes_ID) {
         Clothes_ID = clothes_ID;
+    }
+
+    public int getNo_of_Clothes() {
+        return No_of_Clothes;
+    }
+
+    public void setNo_of_Clothes(int no_of_Clothes) {
+        No_of_Clothes = no_of_Clothes;
     }
 
     public String getDate_Dropped() {
