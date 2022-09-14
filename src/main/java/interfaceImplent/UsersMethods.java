@@ -2,20 +2,18 @@ package interfaceImplent;
 
 import dbconnections.LaundryConnection;
 import interfaces.IUserMethods;
-import model.Clothes;
+import model.ClotheType;
 import model.Users;
+import model.Clothes;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public abstract class UsersMethods implements IUserMethods {
+public class UsersMethods implements IUserMethods {
     PreparedStatement prep;
     ResultSet res;
 
@@ -25,28 +23,21 @@ public abstract class UsersMethods implements IUserMethods {
     public boolean Register(Users users) {
         boolean status = false;
         int update;
-        String INSERT = "INSERT INTO users (UserID, Fullname, Phone_No, Home_Address, Clothes_ID, No_Of_Clothes, Date_Dropped, Time_Dropped, PickUp_Date, PickUp_Time) VALUES (?,?,?,?,?,?,?,?,?)";
+        String USER_INFO = "INSERT INTO users (UserID, Fullname, Phone_No, Home_Address, UserEmail) VALUES (?,?,?,?)";
         if(launder.dbconnection()){
             try {
-                prep = launder.getConnections().prepareStatement(INSERT);
+                prep = launder.getConnections().prepareStatement(USER_INFO);
                 prep.setInt(1,users.getUserID());
                 prep.setString(2, users.getFullname());
-                prep.setLong(3, users.getPhoneNumber());
+                prep.setString(3, users.getPhoneNumber());
                 prep.setString(4, users.getHomeAddress());
-                prep.setInt(5,users.getClothes_ID());
-                prep.setInt(6,users.getNo_of_Clothes());
-                prep.setString(7, users.getDate_Dropped());
-                prep.setString(8, users.getTime_Dropped());
-                prep.setString(9, users.getPickUp_Date());
-                prep.setString(10, users.getPickUp_Time());
-
+                prep.setString(5, users.getUserEmail());
                 update = prep.executeUpdate();
 
                 if(update == 0){
-                    System.out.println("  <<>>  Laundry Not Placed");
-                    return  false;
+                    System.out.println("(*) Your Details Were Not Uploaded (*)");
                 } else{
-                    System.out.println("<<>> Customer Laundry Has Been Successfully Placed <<>>");
+                    System.out.println("(*) Your Details Have Successfully Been Uploaded (*)");
                 }
             }catch (SQLException e){
                 e.printStackTrace();
@@ -56,50 +47,64 @@ public abstract class UsersMethods implements IUserMethods {
     }
 
     @Override
-    public String ViewClothesTable(Clothes clothes) {
+    public boolean DropClothes(Clothes cloth, int Amount) {
+        boolean status = false;
+        int update = 0;
+        String CLOTHE_DETS = "INSERT INTO clothes_type (UserId, Clothe_Id, Clothetype_ID, No_Of_Clothes, Date_Dropped, Time_Dropped) VALUES (?,?,?,?,?)";
+        String GetPrice = "SELECT PRICE FROM clothe WHERE Clothetype_ID = ?";
+        try {
+            prep = launder.getConnections().prepareStatement(CLOTHE_DETS);
+            prep.setInt(1,cloth.getUserId());
+            prep.setInt(2,cloth.getClothe_Id());
+            prep.setInt(3,cloth.getClothetype_Id());
+            prep.setInt(4,cloth.getNo_Of_Clothes());
+            prep.setString(5,cloth.getDate_Dropped());
+            prep.setString(6,cloth.getTime_Dropped());
+            prep.setInt(7,cloth.getAmount());
+            res = prep.executeQuery();
+
+
+            if(update == 0){
+                System.out.println("(*) Your Laundry Was Not Uploaded (*)");
+            } else{
+                System.out.println("(*) Your Laundry Has Been Uploaded (*)");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return status;
+    }
+
+    @Override
+    public List<ClotheType> ViewPriceList() {
+        List<ClotheType> clothes=new ArrayList<>();
         String DISPLAY = "SELECT * FROM clothes";
-        String Message = "<*> The List And Prices Of All Clothing Material <*>";
     if (launder.dbconnection()) {
         try {
             prep = launder.getConnections().prepareStatement(DISPLAY);
             res = prep.executeQuery();
+            while (res.next()){
+                ClotheType clothe = new ClotheType();
+                clothe.setClothes_ID(res.getInt("Clothes_ID"));
+                clothe.setClothe_Type(res.getString("Clothe_Type"));
+                clothe.setPrice(res.getInt("Price"));
+                clothes.add(clothe);
+            }
 
         }catch (SQLException e){
             e.printStackTrace();
         }
     }
-        return Message;
+        return clothes;
     }
 
-    @Override
-    public String DaysAndTimeLeft(int UserId) {
-        String Appre = "Thank You For Choosing Us";
-        Users users = new Users();
-        LocalDate date = LocalDate.now();
-        LocalTime time = LocalTime.now();
-        LocalDate date2 = LocalDate.parse(users.getPickUp_Date());
-        Period until = date.until(date2);
-        if (launder.dbconnection()){
-            String GET = "SELECT * FROM users WHERE UserId = ?";
-            try {
-                prep = launder.getConnections().prepareStatement(GET);
-                prep.setInt(5,UserId);
-                res = prep.executeQuery();
-            }catch (SQLException e){
-                e.printStackTrace();
-            }
-            System.out.println("You have " + until.getMonths()+" years and "+until.getDays()+" days left");
-        }
-
-        return Appre;
-    }
 
     @Override
-    public String UpdateYourLaundry(Users users) {
+    public String UpdateDetails(Users users) {
         PreparedStatement ps;
 
-        String UPDATE = "UPDATE users SET Clothes_ID = ?, No_Of_Clothes = ?, PickUp_Date = ?, PickUp_Time = ?";
-        String SEARCH = "SELECT * FROM users WHERE UserId = ?";
+        String UPDATE = "UPDATE users SET Phone_No = ?, Home_Address = ? WHERE UserID =?";
+        String SEARCH = "SELECT * FROM users WHERE UserID = ?";
         String Notification = "";
 
         if (launder.dbconnection()){
@@ -109,10 +114,8 @@ public abstract class UsersMethods implements IUserMethods {
                 res = prep.executeQuery();
                 if (res.next()){
                     ps = launder.getConnections().prepareStatement(UPDATE);
-                    ps.setInt(1,users.getClothes_ID());
-                    ps.setInt(2,users.getNo_of_Clothes());
-                    ps.setString(3, users.getPickUp_Date());
-                    ps.setString(4,users.getPickUp_Time());
+                    ps.setString(1,users.getPhoneNumber());
+                    ps.setString(2, users.getHomeAddress());
 
                     int update = ps.executeUpdate();
                     if (update == 0){
@@ -134,14 +137,34 @@ public abstract class UsersMethods implements IUserMethods {
 
 
     @Override
-    public String CheckPrice(Users users, Clothes clothes) {
-        return null;
-    }
-
-    @Override
     public String CancelService(int UserID, String confirm) {
-        return null;
+        String status ="";
+
+        int upd =0;
+        String Cancel = "DELETE FROM users WHERE UserEmail = ?";
+        if(launder.dbconnection()){
+            try{
+                prep = launder.getConnections().prepareStatement(Cancel);
+                prep.setInt(1,UserID);
+                if(confirm.equalsIgnoreCase("y")){
+                    upd = prep.executeUpdate();
+                } else {
+                    System.out.println("(*) Operation aborted (*)");
+                }
+
+                if(upd == 0){
+                    status ="(*) Cancel Operation Not Successful (*)";
+                    return status;
+                } else {
+                    status="(*) Laundry Has Successfully Been Cancelled (*)";
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return status;
     }
-
-
 }
+
+
+

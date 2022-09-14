@@ -1,11 +1,15 @@
 package interfaces;
 
-import model.Clothes;
+import model.ClotheType;
 import model.Users;
 
+import java.util.List;
+
 public interface IAdminMethods {
-    public String ViewAllCustomers(Users users, Clothes clothes);
-    public String CalculateUsersPrice(Users users, Clothes clothes);
-    public String SendReminder(Users user);
-    public String RemoveUser(Users user, String Confirm);
+    public List<Users> ViewAllCustomers();
+    public String CalculateUsersPrice();
+    public String CustomerWithPrice();
+    public String UpdateUsers();
+    public String TimeReminder(Users user);
+    public String RemoveUser(int UserID, String Confirm);
 }
