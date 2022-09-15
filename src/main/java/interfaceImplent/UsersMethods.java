@@ -3,12 +3,13 @@ package interfaceImplent;
 import dbconnections.LaundryConnection;
 import interfaces.IUserMethods;
 import model.ClotheType;
+import model.LaundryItems;
 import model.Users;
-import model.Clothes;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,37 +48,63 @@ public class UsersMethods implements IUserMethods {
     }
 
     @Override
-    public boolean DropClothes(Clothes cloth, int Amount) {
-        boolean status = false;
-        int update = 0;
-        String CLOTHE_DETS = "INSERT INTO clothes_type (UserId, Clothe_Id, Clothetype_ID, No_Of_Clothes, Date_Dropped, Time_Dropped) VALUES (?,?,?,?,?)";
-        String GetPrice = "SELECT PRICE FROM clothe WHERE Clothetype_ID = ?";
-        try {
-            prep = launder.getConnections().prepareStatement(CLOTHE_DETS);
-            prep.setInt(1,cloth.getUserId());
-            prep.setInt(2,cloth.getClothe_Id());
-            prep.setInt(3,cloth.getClothetype_Id());
-            prep.setInt(4,cloth.getNo_Of_Clothes());
-            prep.setString(5,cloth.getDate_Dropped());
-            prep.setString(6,cloth.getTime_Dropped());
-            prep.setInt(7,cloth.getAmount());
+    public boolean DropClothes(List<LaundryItems> clothes,Users users) {
+        String LAUNDRY_INSERT = "Insert into laundry_table (User_Id,Date_Dropped) values(?,?) ";
+     if (launder.dbconnection()){
+         try {
+            prep = launder.getConnections().prepareStatement(LAUNDRY_INSERT);
+            prep.setInt(1,users.getUserID());
+            prep.setString(2, String.valueOf(LocalDate.now()));
             res = prep.executeQuery();
-
-
-            if(update == 0){
-                System.out.println("(*) Your Laundry Was Not Uploaded (*)");
-            } else{
-                System.out.println("(*) Your Laundry Has Been Uploaded (*)");
+            if (res.next()){
+                int id = res.getInt("id");
+                for (int i =0;i< clothes.size();i++){
+                    String SECOND_INSERT = "INSERT INTO laundry_items (Laundry_Id, Clothetype, Quantity, Amount) values(?,?,?,?)";
+                    prep.clearParameters();
+                    LaundryItems cunt = clothes.get(i);
+                    prep =  launder.getConnections().prepareStatement(SECOND_INSERT);
+                    prep.setInt(1,id);
+                    prep.setString(2,cunt.getClothetype());
+                    prep.setInt(3,cunt.getQuantity());
+                    prep.setInt(4,cunt.getAmount());
+                    res = prep.executeQuery();
+                }
+                return true;
             }
-        }catch (SQLException e){
-            e.printStackTrace();
+         }catch (Exception e){
+                e.printStackTrace();
+         }
+     }
+      return false;
+    }
+
+    @Override
+    public Users GetUserByEmail(String email) {
+        String SELECT = "SELECT * FROM Laundry WHERE Email = ?";
+        if (launder.dbconnection()){
+            try {
+                prep = launder.getConnections().prepareStatement(SELECT);
+                prep.setString(1,email);
+                res = prep.executeQuery();
+                Users user = new Users();
+                if (res.next()){
+                    user.setUserID(res.getInt("UserID"));
+                    user.setFullnamee(res.getString("Fullname"));
+                    user.setPhoneNumber(res.getString("Phone_No"));
+                    user.setHomeAddress(res.getString("Home_Address"));
+                    user.setUserEmail(res.getString("UserEmail"));
+            return user;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
-        return status;
+        return null;
     }
 
     @Override
     public List<ClotheType> ViewPriceList() {
-        List<ClotheType> clothes=new ArrayList<>();
+        List<ClotheType> clothes = new ArrayList<>();
         String DISPLAY = "SELECT * FROM clothes";
     if (launder.dbconnection()) {
         try {
@@ -90,7 +117,6 @@ public class UsersMethods implements IUserMethods {
                 clothe.setPrice(res.getInt("Price"));
                 clothes.add(clothe);
             }
-
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -103,7 +129,7 @@ public class UsersMethods implements IUserMethods {
     public String UpdateDetails(Users users) {
         PreparedStatement ps;
 
-        String UPDATE = "UPDATE users SET Phone_No = ?, Home_Address = ? WHERE UserID =?";
+        String PICKUP = "UPDATE users SET Phone_No = ?, Home_Address = ? WHERE UserID =?";
         String SEARCH = "SELECT * FROM users WHERE UserID = ?";
         String Notification = "";
 
@@ -113,7 +139,7 @@ public class UsersMethods implements IUserMethods {
                 prep.setInt(1,users.getUserID());
                 res = prep.executeQuery();
                 if (res.next()){
-                    ps = launder.getConnections().prepareStatement(UPDATE);
+                    ps = launder.getConnections().prepareStatement(PICKUP);
                     ps.setString(1,users.getPhoneNumber());
                     ps.setString(2, users.getHomeAddress());
 
@@ -137,7 +163,7 @@ public class UsersMethods implements IUserMethods {
 
 
     @Override
-    public String CancelService(int UserID, String confirm) {
+    public String PickUp(int UserID, String confirm) {
         String status ="";
 
         int upd =0;
@@ -149,14 +175,14 @@ public class UsersMethods implements IUserMethods {
                 if(confirm.equalsIgnoreCase("y")){
                     upd = prep.executeUpdate();
                 } else {
-                    System.out.println("(*) Operation aborted (*)");
+                    System.out.println("(*) PickUp Aborted (*)");
                 }
 
                 if(upd == 0){
-                    status ="(*) Cancel Operation Not Successful (*)";
+                    status ="(*) PickUp Operation Not Successful (*)";
                     return status;
                 } else {
-                    status="(*) Laundry Has Successfully Been Cancelled (*)";
+                    status="(*) Laundry Has Successfully Been Picked Up (*)";
                 }
             } catch (SQLException e){
                 e.printStackTrace();
