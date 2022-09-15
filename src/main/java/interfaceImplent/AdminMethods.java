@@ -37,7 +37,6 @@ public class AdminMethods implements IAdminMethods {
                     clothe.setPrice(res.getInt("Price"));
                     clothes.add(clothe);
                 }
-
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -48,7 +47,6 @@ public class AdminMethods implements IAdminMethods {
     @Override
     public String UpdateClothesList(ClotheType clothetp) {
         PreparedStatement ps;
-
         String UPDATE =  "UPDATE clothes Clothes_Type = ?, Price = ? WHERE Clothetype_ID = ?";
         String SEARCH = "SELECT * FROM clothes WHERE Clothetype_ID = ?";
         String status = "";
@@ -107,8 +105,15 @@ public class AdminMethods implements IAdminMethods {
 
 
     @Override
-    public String RemoveUser(int UserID, String Confirm) {
-        String REMOVE = "DELETE FROM Laundry WHERE PickUp_Status = ? ";
+    public String RemoveUser() {
+        String REMOVE = "DELETE FROM laundry_table WHERE PickUp_Status = ? ";
+        if (launder.dbconnection()){
+            try {
+                prep = launder.getConnections().prepareStatement(REMOVE);
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
         return null;
     }
 }

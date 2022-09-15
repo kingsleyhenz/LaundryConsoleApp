@@ -1,8 +1,8 @@
-import view.view;
+import view.UserView;
 
 public class Main {
     public static  void main(String[] args){
-        view view = new view();
+        UserView view = new UserView();
         view.menu();
     }
 }

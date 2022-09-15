@@ -1,49 +1,49 @@
 package model;
 
 public class Laundry {
-    private int ID;
-    private int UserId;
-    private String Date_Dropped;
-    private String PickUp_Date;
-    private String PickUp_Status;
+    private int Laundry_ID;
+    private int DropOff_Id;
+    private String Clothetype;
+    private int Quantity;
+    private int Amount;
 
-    public int getID() {
-        return ID;
+
+    public int getLaundry_ID() {
+        return Laundry_ID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setLaundry_ID(int laundry_ID) {
+        Laundry_ID = laundry_ID;
     }
 
-    public int getUserId() {
-        return UserId;
+    public int getDropOff_Id() {
+        return DropOff_Id;
     }
 
-    public void setUserId(int userId) {
-        UserId = userId;
+    public void setDropOff_Id(int dropOff_Id) {
+        DropOff_Id = dropOff_Id;
+    }
+    public String getClothetype() {
+        return Clothetype;
     }
 
-    public String getDate_Dropped() {
-        return Date_Dropped;
+    public void setClothetype(String clothetype) {
+        Clothetype = clothetype;
     }
 
-    public void setDate_Dropped(String date_Dropped) {
-        Date_Dropped = date_Dropped;
+    public int getQuantity() {
+        return Quantity;
     }
 
-    public String getPickUp_Date() {
-        return PickUp_Date;
+    public void setQuantity(int quantity) {
+        Quantity = quantity;
     }
 
-    public void setPickUp_Date(String pickUp_Date) {
-        PickUp_Date = pickUp_Date;
+    public int getAmount() {
+        return Amount;
     }
 
-    public String getPickUp_Status() {
-        return PickUp_Status;
-    }
-
-    public void setPickUp_Status(String pickUp_Status) {
-        PickUp_Status = pickUp_Status;
+    public void setAmount(int amount) {
+        Amount = amount;
     }
 }

@@ -10,6 +10,5 @@ public interface IAdminMethods {
     public List<ClotheType> ViewClotheList();
     public String UpdateClothesList(ClotheType clothetp);
     public boolean AddNewMaterial(ClotheType clothetp);
-//    public String TimeReminder(Users user);
-    public String RemoveUser(int UserID, String Confirm);
+    public String RemoveUser();
 }
