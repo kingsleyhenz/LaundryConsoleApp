@@ -1,30 +1,30 @@
 package model;
 
 public class ClotheType {
-    private int Clothes_ID;
-    private String Clothe_Type;
+    private int Clothetype_ID;
+    private String Clothes_Type;
     private int Price;
 
     public ClotheType() {
-        Clothes_ID = Clothes_ID;
-        Clothe_Type = Clothe_Type;
+        Clothetype_ID = Clothetype_ID;
+        Clothes_Type = Clothes_Type;
         Price = Price;
     }
 
-    public int getClothes_ID() {
-        return Clothes_ID;
+    public int getClothetype_ID() {
+        return Clothetype_ID;
     }
 
-    public void setClothes_ID(int clothes_ID) {
-        Clothes_ID = clothes_ID;
+    public void setClothetype_ID(int clothetype_ID) {
+        Clothetype_ID = clothetype_ID;
     }
 
-    public String getClothe_Type() {
-        return Clothe_Type;
+    public String getClothes_Type() {
+        return Clothes_Type;
     }
 
-    public void setClothe_Type(String clothe_Type) {
-        Clothe_Type = clothe_Type;
+    public void setClothes_Type(String clothes_Type) {
+        Clothes_Type = clothes_Type;
     }
 
     public int getPrice() {

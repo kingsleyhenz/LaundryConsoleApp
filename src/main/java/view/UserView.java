@@ -60,8 +60,11 @@ public class UserView {
                     }while (redo.equalsIgnoreCase("Yes"));
                     break;
                 case 3:
+                    do {
                     System.out.println("  >> Kindly Input Laundry Id (ie 1000-3000)");
                     laundry.setLaundry_ID(scan.nextInt());
+                    System.out.println("  >> Kindly Input Your User ID");
+                    laundry.setUser_Id(scan.nextInt());
                     System.out.println("  >> Kindly Input Your DropOff ID Again");
                     laundry.setDropOff_Id(scan.nextInt());
                     System.out.println("  >> Kindly Put The Material As Listed In Our PriceList");
@@ -69,13 +72,15 @@ public class UserView {
                     System.out.println("  >> Kindly Input The Quantity Of Said Material");
                     laundry.setQuantity(scan.nextInt());
                     System.out.println(usersMethods.CompleteReg(laundry));
+                        redo = scan.next();
+                    }while (redo.equalsIgnoreCase("Yes"));
                     break;
                 case 4:
                     System.out.println("Fetching Price List Table ........");
                     System.out.println("Clothes_ID"+"\t"+"Clothe_Type"+"\t"+"\t"+"Price");
                     List<ClotheType>  clothes = usersMethods.ViewPriceList();
                    for (ClotheType cl: clothes){
-                       System.out.println(cl.getClothes_ID()+"\t"+"\t"+"\t"+cl.getClothe_Type()+"\t"+"\t"+"\t"+cl.getPrice()+"\n");
+                       System.out.println(cl.getClothetype_ID()+"\t"+"\t"+"\t"+cl.getClothes_Type()+"\t"+"\t"+"\t"+cl.getPrice()+"\n");
                    }
                     break;
                 case 5:
@@ -103,6 +108,8 @@ public class UserView {
                 case 7:
                     System.out.println(" Kindly Enter Your DropOff Id");
                     drop.setDropOff_ID(scan.nextInt());
+                    System.out.println("Please Kindly Insert 'Picked'");
+                    drop.setPickUp_Status(scan.next());
                     System.out.println(" Thank You For Servicing With Us :)");
                     System.out.println(usersMethods.PickUp(drop));
                     break;

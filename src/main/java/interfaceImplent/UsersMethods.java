@@ -52,7 +52,7 @@ public class UsersMethods implements IUserMethods {
     @Override
     public boolean DropClothes(DropOff drop) {
         int update;
-        String Drop = "INSERT INTO dropoff (DropOff_Id, User_Id, Date_Dropped, Time_Dropped, PickUp_Date, PickUp_Time) VALUES (?,?,?,?,?,?)";
+        String Drop = "INSERT INTO dropoff (DropOff_Id, UserID, Date_Dropped, Time_Dropped, PickUp_Date, PickUp_Time) VALUES (?,?,?,?,?,?)";
         if (launder.dbconnection()){
             try {
                 prep = launder.getConnections().prepareStatement(Drop);
@@ -65,7 +65,7 @@ public class UsersMethods implements IUserMethods {
                 update = prep.executeUpdate();
 
                 if(update == 0){
-                    System.out.println("(*) Drop Off Details Were Not Successfully Stored (*)");
+                    System.out.println("(*) Drop Off Was Not Successful (*)");
                 } else{
                     System.out.println("(*) Success!! (*)");
                 }
@@ -79,19 +79,20 @@ public class UsersMethods implements IUserMethods {
     @Override
     public boolean CompleteReg(Laundry laundry) {
         int update;
-        String Complete = "INSERT INTO laundry_table (Laundry_Id, DropOff_Id, Clothetype, Quantity, Amount) VALUES (?,?,?,?,?)";
+        String Complete = "INSERT INTO laundry_table (Laundry_Id, UserID, DropOff_Id, Clothetype, Quantity, Amount) VALUES (?,?,?,?,?,?)";
         if (launder.dbconnection()){
             try {
                 prep = launder.getConnections().prepareStatement(Complete);
                 prep.setInt(1,laundry.getLaundry_ID());
-                prep.setInt(2,laundry.getDropOff_Id());
-                prep.setString(3, laundry.getClothetype());
-                prep.setInt(4,laundry.getQuantity());
-                prep.setInt(5,laundry.getAmount());
+                prep.setInt(2,laundry.getUser_Id());
+                prep.setInt(3,laundry.getDropOff_Id());
+                prep.setString(4, laundry.getClothetype());
+                prep.setInt(5,laundry.getQuantity());
+                prep.setInt(6,laundry.getAmount());
                 update = prep.executeUpdate();
 
                 if(update == 0){
-                    System.out.println("(*) You've Not Been Successfully Regsitered (*)");
+                    System.out.println("(*) You've Not Been Successfully Registered (*)");
                 } else{
                     System.out.println("(*) You Have Been Successfully Registered (*)");
                 }
@@ -112,8 +113,8 @@ public class UsersMethods implements IUserMethods {
             res = prep.executeQuery();
             while (res.next()){
                 ClotheType clothe = new ClotheType();
-                clothe.setClothes_ID(res.getInt("Clothetype_ID"));
-                clothe.setClothe_Type(res.getString("Clothes_Type"));
+                clothe.setClothetype_ID(res.getInt("Clothetype_ID"));
+                clothe.setClothes_Type(res.getString("Clothes_Type"));
                 clothe.setPrice(res.getInt("Price"));
                 clothes.add(clothe);
             }
@@ -197,7 +198,7 @@ public class UsersMethods implements IUserMethods {
     public String PickUp(DropOff drop) {
         PreparedStatement ps;
         String status ="";
-        String PickUp = "INSERT INTO dropoff (PickUp_Status) VALUES (?)";
+        String PickUp = "UPDATE dropoff SET Pickup_Status = ? WHERE DropOff_Id = ?";
         String SEARCH = "SELECT * FROM dropoff WHERE DropOff_Id = ?";
         if(launder.dbconnection()){
             try{
@@ -207,6 +208,7 @@ public class UsersMethods implements IUserMethods {
                 if(res.next()){
                    ps = launder.getConnections().prepareStatement(PickUp);
                    ps.setString(1, drop.getPickUp_Status());
+                   ps.setInt(2,drop.getDropOff_ID());
                     int upd = ps.executeUpdate();
                     if(upd == 0){
                         status = "): Unable To Process Request :(";

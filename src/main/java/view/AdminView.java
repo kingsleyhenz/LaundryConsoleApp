@@ -31,22 +31,27 @@ public class AdminView {
             choice = scan.nextInt();
             switch (choice){
                 case 1:
-                    System.out.println(adminMethods.ViewAllCustomers());
+                    System.out.println("Fetching Customer Table ........");
+                    System.out.println("fullName"+"\t"+"\t"+"\t"+"Phone Number"+"\t"+"\t"+"Email");
+                    List<Users>  users = adminMethods.ViewAllCustomers();
+                    for (Users us: users){
+                        System.out.println(us.getFullname()+"\t"+us.getPhoneNumber()+"\t"+"\t"+us.getUserEmail()+"\n");
+                    }
                     break;
                 case 2:
-                    System.out.println("Fetching Price List Table ........");
+                    System.out.println("Fetching Customer Table ........");
                     System.out.println("Clothes_ID"+"\t"+"Clothe_Type"+"\t"+"\t"+"Price");
                     List<ClotheType>  clothes = adminMethods.ViewClotheList();
                     for (ClotheType cl: clothes){
-                        System.out.println(cl.getClothes_ID()+"\t"+"\t"+"\t"+cl.getClothe_Type()+"\t"+"\t"+"\t"+cl.getPrice()+"\n");
+                        System.out.println(cl.getClothetype_ID()+"\t"+"\t"+"\t"+cl.getClothes_Type()+"\t"+"\t"+"\t"+cl.getPrice()+"\n");
                     }
                     break;
                 case 3:
                     do{
                     System.out.println("<> Enter Clothe ID <>");
-                    clothtype.setClothes_ID(scan.nextInt());
+                    clothtype.setClothetype_ID(scan.nextInt());
                     System.out.println("<> Enter Clothe Type <>");
-                    clothtype.setClothe_Type(scan.next());
+                    clothtype.setClothes_Type(scan.next());
                     System.out.println("<> Enter New Price <>");
                     clothtype.setPrice(scan.nextInt());
                     System.out.println(adminMethods.UpdateClothesList(clothtype));
@@ -56,16 +61,16 @@ public class AdminView {
                     break;
                 case 4:
                     System.out.println("Enter The New Clothe Id");
-                    clothtype.setClothes_ID(scan.nextInt());
+                    clothtype.setClothetype_ID(scan.nextInt());
                     System.out.println("Enter The New Clothe Type");
-                    clothtype.setClothe_Type(scan.next());
+                    clothtype.setClothes_Type(scan.next());
                     System.out.println("Enter The Price");
                     clothtype.setPrice(scan.nextInt());
                     System.out.println(adminMethods.AddNewMaterial(clothtype));
                     break;
                 case 5:
                     System.out.println(" Removing Users Now........");
-                    System.out.println(adminMethods.RemoveUser());
+                    System.out.println(adminMethods.RemoveUser(drop));
                     break;
                 default:
                     System.out.println("  >>  Enter valid option");

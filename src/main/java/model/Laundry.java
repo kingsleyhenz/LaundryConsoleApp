@@ -1,7 +1,11 @@
 package model;
 
-public class Laundry {
+import java.util.Collection;
+import java.util.Iterator;
+
+public class Laundry extends Users {
     private int Laundry_ID;
+    private int User_Id;
     private int DropOff_Id;
     private String Clothetype;
     private int Quantity;
@@ -14,6 +18,14 @@ public class Laundry {
 
     public void setLaundry_ID(int laundry_ID) {
         Laundry_ID = laundry_ID;
+    }
+
+    public int getUser_Id() {
+        return User_Id;
+    }
+
+    public void setUser_Id(int user_Id) {
+        User_Id = user_Id;
     }
 
     public int getDropOff_Id() {
@@ -47,3 +59,5 @@ public class Laundry {
         Amount = amount;
     }
 }
+
+
